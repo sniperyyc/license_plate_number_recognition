@@ -1,0 +1,12 @@
+function [I_BW] = edge_detect(I_gray)
+
+% perform edge detection using sobel filter
+% Basically, we apply two kernels in x and y direction separately.
+% Sx = [-1 -2 -1; 0 0 0; 1 2 1]
+% Sy = [-1 0 1; -2 0 2; -1 0 1]
+
+
+
+
+end
+
