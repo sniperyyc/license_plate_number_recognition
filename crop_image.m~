@@ -1,3 +1,5 @@
+clear all; clc;
+
 %% EECS442 Final Project
 % Group Lamborghini
 % Composed by Jiongsheng Cai, Jingyao Hu, Yucheng Yin
@@ -20,21 +22,29 @@
 
 
 %% Read images from folder
-jpegFiles = dir('dataset/*.jpg'); 
-numfiles = length(jpegFiles);
-mydata = cell(1, numfiles);
+origFiles = dir('dataset/*.jpg'); 
+numfiles = length(origFiles);
+origImages = cell(1, numfiles);
 
 for k = 1:numfiles 
-  mydata{k} = imread(strcat('dataset/', jpegFiles(k).name)); 
+  origImages{k} = imread(strcat('dataset/', origFiles(k).name)); 
 end
 
 %% convert image to grayscale, then binarization and perform edge detection
 % The purpose of edge detection is to remove noise in the original image
-test_image = imread('dataset/1.jpg');
-test_image = rgb2gray(test_image);
+for k = 1:numfiles
+    test_image = rgb2gray(origImages{k});
 
-% edge detection is implemented in edge_detect.m using sobel filter
-test_image_BW = edge_detect(test_image);
-imshow(test
+    % edge detection is implemented in edge_detect.m using sobel filter
+    test_image_BW = edge_detect(test_image);
+    imwrite(test_image_BW, strcat('dataset_edge/', origFiles(k).name));
+end
 
+% [~, threshold] = edge(test_image, 'sobel');
+% fudgeFactor = .5;
+% BWs = edge(test_image,'sobel', threshold * fudgeFactor);
+% figure, imshow(BWs), title('binary gradient mask');
+
+%% determine license plate location by calculating vertical and horizontal histogram
+% implemented in extract_plate.m
 
