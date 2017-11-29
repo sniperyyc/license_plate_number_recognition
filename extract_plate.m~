@@ -1,4 +1,4 @@
-function [I_plate, x1, x2, y1, y2] = extract_plate(I_BW)
+function [I_plate, horiHist, vertiHist] = extract_plate(I_BW)
 % Given a pre-processed black and white image, determine the location of
 % the license plate and extract it from the image
 
@@ -91,10 +91,8 @@ x_diff = vertiCoordinate(:, 2) - vertiCoordinate(:, 1);
 I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
     horiCoordinate(y_index, 1):horiCoordinate(y_index, 2));
 
-x1 = vertiCoordinate(x_index,1);
-x2 = vertiCoordinate(x_index,2);
-y1 = horiCoordinate(y_index, 1);
-y2 = horiCoordinate(y_index, 2);
+vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
+    horiCoordinate(y_index, 1):horiCoordinate(y_index, 2)
 
 end
 

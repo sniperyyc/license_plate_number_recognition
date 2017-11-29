@@ -25,6 +25,8 @@ clear all; clc;
 origFiles = dir('dataset/*.jpg'); 
 numfiles = length(origFiles);
 origImages = cell(1, numfiles);
+edgeImages = cell(1, numfiles);
+extractImages = cell(1, numfiles);
 
 for k = 1:numfiles 
   origImages{k} = imread(strcat('dataset/', origFiles(k).name)); 
@@ -37,6 +39,7 @@ for k = 1:numfiles
 
     % edge detection is implemented in edge_detect.m using sobel filter
     test_image_BW = edge_detect(test_image);
+    edgeImages{k} = test_image_BW;
     imwrite(test_image_BW, strcat('dataset_edge/', origFiles(k).name));
 end
 
@@ -47,4 +50,10 @@ end
 
 %% determine license plate location by calculating vertical and horizontal histogram
 % implemented in extract_plate.m
-
+for k = 1:numfiles
+    [I_plate, x1, x2, y1, y2] = extract_plate(edgeImages{k});
+    I_gray = rgb2gray(origImages{k}(x1:x2, y1:y2, :));
+    I_extract = imcomplement(imbinarize(I_gray));
+    extractImages{k} = I_extract;
+    imwrite(I_extract, strcat('dataset_extracted_plate/', origFiles(k).name));
+end
