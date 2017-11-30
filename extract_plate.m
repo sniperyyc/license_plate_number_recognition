@@ -52,23 +52,23 @@ vertiHistThre = max(vertiHist)*0.25;
 horiCoordinate = [];
 vertiCoordinate = [];
 
-flag = false;
-y_startPt = 0; y_endPt = 0;
-for i = 1:N
-    if horiHist(i) > horiHistThre && flag == false
-        y_startPt = i;
-        flag = true;
-    end
-    
-    if horiHist(i) <= horiHistThre && flag == true
-        y_endPt = i-1;
-        horiCoordinate = [horiCoordinate; y_startPt y_endPt];
-        flag = false;
-    end
-end
-
-y_diff = horiCoordinate(:, 2) - horiCoordinate(:, 1);
-[M, y_index] = max(y_diff);
+% flag = false;
+% y_startPt = 0; y_endPt = 0;
+% for i = 1:N
+%     if horiHist(i) > horiHistThre && flag == false
+%         y_startPt = i;
+%         flag = true;
+%     end
+%     
+%     if horiHist(i) <= horiHistThre && flag == true
+%         y_endPt = i-1;
+%         horiCoordinate = [horiCoordinate; y_startPt y_endPt];
+%         flag = false;
+%     end
+% end
+% 
+% y_diff = horiCoordinate(:, 2) - horiCoordinate(:, 1);
+% [mx, y_index] = max(y_diff);
 
 flag = false;
 x_startPt = 0; x_endPt = 0;
@@ -86,15 +86,17 @@ for i = 1:M
 end
 
 x_diff = vertiCoordinate(:, 2) - vertiCoordinate(:, 1);
-[M, x_index] = max(x_diff);
+[my, x_index] = max(x_diff);
 
-I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
-    horiCoordinate(y_index, 1):horiCoordinate(y_index, 2));
+% I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
+%     horiCoordinate(y_index, 1):horiCoordinate(y_index, 2));
+
+I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), 1:N);
 
 x1 = vertiCoordinate(x_index,1);
 x2 = vertiCoordinate(x_index,2);
-y1 = horiCoordinate(y_index, 1);
-y2 = horiCoordinate(y_index, 2);
+y1 = 1;
+y2 = N;
 
 end
 

@@ -24,6 +24,7 @@ clear all; clc;
 %% Read images from folder
 origFiles = dir('dataset/*.jpg'); 
 numfiles = length(origFiles);
+numfiles = 12; %% When testing, choose first 12 images
 origImages = cell(1, numfiles);
 edgeImages = cell(1, numfiles);
 extractImages = cell(1, numfiles);
@@ -43,15 +44,15 @@ for k = 1:numfiles
     imwrite(test_image_BW, strcat('dataset_edge/', origFiles(k).name));
 end
 
-% [~, threshold] = edge(test_image, 'sobel');
-% fudgeFactor = .5;
-% BWs = edge(test_image,'sobel', threshold * fudgeFactor);
+[~, threshold] = edge(test_image, 'sobel');
+fudgeFactor = .5;
+BWs = edge(test_image,'sobel', threshold * fudgeFactor);
 % figure, imshow(BWs), title('binary gradient mask');
 
 %% determine license plate location by calculating vertical and horizontal histogram
 % implemented in extract_plate.m
 for k = 1:numfiles
-    [I_plate, x1, x2, y1, y2] = extract_plate(edgeImages{k});
+    [I_plate, x1, x2, y1, y2] = extract_plate(rgb2gray(origImages{k}));
     I_gray = rgb2gray(origImages{k}(x1:x2, y1:y2, :));
     I_extract = imcomplement(imbinarize(I_gray));
     extractImages{k} = I_extract;
