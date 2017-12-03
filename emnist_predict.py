@@ -26,7 +26,7 @@ def load_model(bin_dir):
     return model
 
 
-def predict(model, x):
+def predict(img):
     ''' Called when user presses the predict button.
         Processes the canvas and handles the image.
         Passes the loaded image into the neural network and it makes
@@ -35,10 +35,17 @@ def predict(model, x):
 
     # read parsed image back in 8-bit, black and white mode (L)
     # x = imread('output.png', mode='L')
-    x = np.invert(x)
-    x = imresize(x,(28,28))
+    # img = np.invert(img)
+    img = imresize(img,(28,28))
+
+    # Fill in to a larger blank image
+    # x = np.zeros([56,56],dtype=np.uint8)
+    # x[:] = 255
+    # x[14:42,14:42] = img
+    # x = imresize(x,(28,28))
 
     # Visualize new array
+    x = img
     imsave('resized.png', x)
 
     # reshape image data for use in neural network
@@ -52,6 +59,7 @@ def predict(model, x):
 
     # Predict from model
     out = model.predict(x)
+    return out
 
 
 
@@ -60,12 +68,11 @@ if __name__ == '__main__':
     mapping = pickle.load(open('bin/mapping.p', 'rb'))
 
     test_dir = 'test_digits/'
-    for x in os.listdir(test_dir):
-        if x == ".DS_Store":
+    for img in os.listdir(test_dir):
+        if img == ".DS_Store":
             continue
-        x = imread(test_dir + x, mode='L')
-        out = predict(model, x)
-        print(out)
+        img = imread(test_dir + img, mode='L')
+        out = predict(img)
         y = chr(mapping[(int(np.argmax(out, axis=1)[0]))])
         print(y)
 
