@@ -1,4 +1,5 @@
-clear all; clc;
+clear all;
+close all;
 
 %% EECS442 Final Project
 % Group Lamborghini
@@ -24,10 +25,11 @@ clear all; clc;
 %% Read images from folder
 origFiles = dir('dataset/*.jpg'); 
 numfiles = length(origFiles);
-numfiles = 12; %% When testing, choose first 12 images
+%numfiles = 12; %% When testing, choose first 12 images
 origImages = cell(1, numfiles);
 edgeImages = cell(1, numfiles);
 extractImages = cell(1, numfiles);
+extractDigits = cell(20, numfiles);
 
 for k = 1:numfiles 
   origImages{k} = imread(strcat('dataset/', origFiles(k).name)); 
@@ -44,17 +46,32 @@ for k = 1:numfiles
     imwrite(test_image_BW, strcat('dataset_edge/', origFiles(k).name));
 end
 
-[~, threshold] = edge(test_image, 'sobel');
-fudgeFactor = .5;
-BWs = edge(test_image,'sobel', threshold * fudgeFactor);
+% [~, threshold] = edge(test_image, 'sobel');
+% fudgeFactor = .5;
+% BWs = edge(test_image,'sobel', threshold * fudgeFactor);
 % figure, imshow(BWs), title('binary gradient mask');
 
 %% determine license plate location by calculating vertical and horizontal histogram
 % implemented in extract_plate.m
+%numfiles = 3;
 for k = 1:numfiles
     [I_plate, x1, x2, y1, y2] = extract_plate(rgb2gray(origImages{k}));
+    %[I_plate, x1, x2, y1, y2] = extract_plate(edgeImages{k});
+    % remove shade from the extracted plate
     I_gray = rgb2gray(origImages{k}(x1:x2, y1:y2, :));
-    I_extract = imcomplement(imbinarize(I_gray));
+    I_filtered = remove_shade(origImages{k}(x1:x2, y1:y2, :));
+    I_extract = I_filtered;
+    %I_extract = imcomplement(imbinarize(I_filtered));
     extractImages{k} = I_extract;
     imwrite(I_extract, strcat('dataset_extracted_plate/', origFiles(k).name));
+end
+%% segment the digits and characters
+% implemented in segment.m
+for k = 1:numfiles        
+    [xx1,xx2,yy1,yy2] = segment(extractImages{k});
+    extractDigits(k,1) = {length(xx1)};
+    for j = 1:length(xx1)
+        extractDigits(k,j+1) = {extractImages{k}(yy1(j):yy2(j),xx1(j):xx2(j))};
+        imwrite(cell2mat(extractDigits(k,j+1)), strcat('dataset_extracted_digits/', char(j - 1 + 'a') , '_', origFiles(k).name));
+    end
 end
