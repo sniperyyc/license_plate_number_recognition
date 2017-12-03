@@ -4,6 +4,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 from scipy.misc import imsave, imread, imresize
 import numpy as np
 from keras.models import model_from_yaml
+import pickle
 
 
 def load_model(bin_dir):
@@ -25,7 +26,7 @@ def load_model(bin_dir):
     return model
 
 
-def predict(x):
+def predict(model, x):
     ''' Called when user presses the predict button.
         Processes the canvas and handles the image.
         Passes the loaded image into the neural network and it makes
@@ -35,10 +36,10 @@ def predict(x):
     # read parsed image back in 8-bit, black and white mode (L)
     # x = imread('output.png', mode='L')
     x = np.invert(x)
+    x = imresize(x,(28,28))
 
     # Visualize new array
     imsave('resized.png', x)
-    x = imresize(x,(28,28))
 
     # reshape image data for use in neural network
     x = x.reshape(1,28,28,1)
@@ -56,10 +57,16 @@ def predict(x):
 
 if __name__ == '__main__':
     model = load_model("bin")
-    test_dir = 'dataset_extracted_plate/'
+    mapping = pickle.load(open('bin/mapping.p', 'rb'))
+
+    test_dir = 'test_digits/'
     for x in os.listdir(test_dir):
+        if x == ".DS_Store":
+            continue
         x = imread(test_dir + x, mode='L')
-        y = predict(x)
+        out = predict(model, x)
+        print(out)
+        y = chr(mapping[(int(np.argmax(out, axis=1)[0]))])
         print(y)
 
 
