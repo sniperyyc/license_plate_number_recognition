@@ -70,8 +70,16 @@ end
 for k = 1:numfiles        
     [xx1,xx2,yy1,yy2] = segment(extractImages{k});
     extractDigits(k,1) = {length(xx1)};
+    count = 0;
     for j = 1:length(xx1)
         extractDigits(k,j+1) = {extractImages{k}(yy1(j):yy2(j),xx1(j):xx2(j))};
-        imwrite(cell2mat(extractDigits(k,j+1)), strcat('dataset_extracted_digits/', origFiles(k).name(1:end - 4), '_', char(j - 1 + 'a') ,'.jpg' ));
+        im = cell2mat(extractDigits(k,j+1));
+        [im_r,im_c] = size(im);
+        ratio = im_r / im_c;
+        
+        if (max(ratio, 1/ratio) < 2 && sum(sum(im)) / (im_r * im_c) > 0.08)
+            imwrite(im, sprintf('dataset_extracted_digits/%s_%d.jpg', origFiles(k).name(1:end - 4), count));
+            count = count + 1;
+        end
     end
 end
