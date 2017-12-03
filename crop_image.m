@@ -72,6 +72,6 @@ for k = 1:numfiles
     extractDigits(k,1) = {length(xx1)};
     for j = 1:length(xx1)
         extractDigits(k,j+1) = {extractImages{k}(yy1(j):yy2(j),xx1(j):xx2(j))};
-        imwrite(cell2mat(extractDigits(k,j+1)), strcat('dataset_extracted_digits/', char(j - 1 + 'a') , '_', origFiles(k).name));
+        imwrite(cell2mat(extractDigits(k,j+1)), strcat('dataset_extracted_digits/', origFiles(k).name(1:end - 4), '_', char(j - 1 + 'a') ,'.jpg' ));
     end
 end
