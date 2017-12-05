@@ -74,6 +74,7 @@ x1 = zeros(length(start_points) - 1,1);
 x2 = zeros(length(start_points) - 1,1);
 y1 = zeros(length(start_points) - 1,1);
 y2 = zeros(length(start_points) - 1,1);
+
 for i = 1:length(start_points) - 1
     x1(i) = max(floor(start_points(i)),1);
     x2(i) = floor(start_points(i+1));

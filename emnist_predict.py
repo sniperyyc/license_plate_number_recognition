@@ -66,15 +66,35 @@ def predict(img):
 if __name__ == '__main__':
     model = load_model("bin")
     mapping = pickle.load(open('bin/mapping.p', 'rb'))
+    # f = open('test_results.txt', 'w+')
+    # test_dir = 'dataset_extracted_digits/'
+    # for sub_dir in sorted(os.listdir(test_dir)):
+    #     if sub_dir == ".DS_Store":
+    #         continue
+
+    #     f.write('%s\n' %sub_dir)
+    #     for img in sorted(os.listdir(test_dir+sub_dir)):
+    #         if img == ".DS_Store":
+    #             continue
+    #         img = imread(test_dir+sub_dir+'/'+img, mode='L')
+    #         out = predict(img)
+    #         y = chr(mapping[(int(np.argmax(out, axis=1)[0]))])
+    #         f.write(y)
+    #     f.write('\n\n')
+
+    # f.close()
 
     test_dir = 'test_digits/'
-    for img in os.listdir(test_dir):
+    for img in sorted(os.listdir(test_dir)):
         if img == ".DS_Store":
             continue
-        img = imread(test_dir + img, mode='L')
+        img = imread(test_dir+img, mode='L')
         out = predict(img)
         y = chr(mapping[(int(np.argmax(out, axis=1)[0]))])
         print(y)
+
+
+
 
 
 
