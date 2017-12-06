@@ -21,6 +21,8 @@
 \usepackage{mathrsfs}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 \lstset{
 	numbers=left, 
 	numberstyle= \tiny, 
@@ -101,7 +103,24 @@ There are a few dataset for license plates online but some of them are significa
 \end{itemize}
 
 \subsection{Character Segmentation}
-[left for Jingyao]
+\begin{itemize}
+	\item After we get the extracted plate, we need to segment each character of the plate for the recognition. We take the advantage of the large color difference (black and white) between the character and the space in the middle of two characters. The following is the specific description of the algorithm. 
+	\begin{algorithm}
+	
+		\begin{algorithmic}[1]
+			\Procedure{Segment}{}
+			\State $start\_position = 0$
+			\For{i:column(image)} 
+			\State Record the position when we fully pass a character
+			\State Record the position when we meet the second character
+			\State Reset the start position and flags
+			\EndFor
+		
+			\EndProcedure
+		\end{algorithmic}
+	\end{algorithm}
+ \item After we get the raw segmentation, we further remove the noise by utilizing the factor that the ratio of white weight to black and the ratio of column to row are in some specific range for the characters we want. Therefore, we manage to filter out some noisy segmented results.
+\end{itemize}
 
 \subsection{Character Recognition}
 [left for Johnson]
@@ -123,7 +142,7 @@ As mentioned above, our dataset doesn't come with labels. Due to the large size,
 		\end{minipage}
 		\begin{minipage}{5cm}
 			\includegraphics[width=5cm]{P1010003_extract.jpg}
-			\caption{After extraction}
+			\caption{After segmentation}
 		\end{minipage}
 	\end{figure}
 
@@ -170,7 +189,7 @@ As mentioned above, our dataset doesn't come with labels. Due to the large size,
 		\end{minipage}
 		\begin{minipage}{5cm}
 			\includegraphics[width=5cm]{P1010013_extract.jpg}
-			\caption{After extraction}
+			\caption{After segmentation}
 		\end{minipage}
 	\end{figure}
 	\textbf{Recognition Result: Failed. No character segmentation.}
