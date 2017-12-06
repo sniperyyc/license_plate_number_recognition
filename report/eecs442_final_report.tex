@@ -123,7 +123,12 @@ There are a few dataset for license plates online but some of them are significa
 \end{itemize}
 
 \subsection{Character Recognition}
-[left for Johnson]
+\begin{itemize}
+	\item After we get the exact segmentation for each character in the license plate. We decided to implement a character-level character recognition. Our work is based on a convolutional neural network (CNN) trained on EMNIST dataset \cite{DBLP:journals/corr/CohenATS17}. EMNIST dataset is an extension of MNIST dataset, which shares the same image structure and parameters as the original MNIST task, involving handwritten letters (uppercase and lowercase) and digits.
+	\item  We chose to train our network on balanced classes, which contains 131,600 characters and 47 balanced class. Considering computational efficiency, we implemented a common and simple network structure for MNIST training. For image pre-processing, we resize every image (of character segmentaion) into 28*28. The network structure follows as two 3*3 convolutional layers, one max-pooling layer, and one fully-connected layer. We use softmax funcion for multiple classes classification. 
+	\item Our network shows an accuracy of 87.33\% on EMNIST test data. 
+	
+\end{itemize}
 
 \section{Results}
 As mentioned above, our dataset doesn't come with labels. Due to the large size, we don't count manually to calculate the accuracy for these plate numbers. By our observation, we find that the plate extraction and character segmentation is quite good, while the character recognition is relatively poor, which causes the recognition accuracy relatively low. We will present one set of good example and one set of bad example. The reason for good or bad recognition will be discussed in the following section.
