@@ -1,4 +1,4 @@
-function [I_plate, horiHist, vertiHist] = extract_plate(I_BW)
+function [I_plate, x1, x2, y1, y2] = extract_plate(I_BW)
 % Given a pre-processed black and white image, determine the location of
 % the license plate and extract it from the image
 
@@ -19,6 +19,7 @@ for i = 1:N-1
     I_BW_vertical_diff(:, i) = I_BW(:, i+1) - I_BW(:, i);
 end
 
+% set horizontal and vertical threshold
 coef = .25;
 horiThre = max(max(I_BW_horizontal_diff))*coef;
 vertiThre = max(max(I_BW_vertical_diff))*coef;
@@ -26,6 +27,7 @@ vertiThre = max(max(I_BW_vertical_diff))*coef;
 horiHist = zeros(N, 1);
 vertiHist = zeros(M, 1);
 
+% iterate each column, only add diff greater than threshold to sum
 for i = 1:N
     sum = 0;
     for j = 1:M-1
@@ -36,6 +38,7 @@ for i = 1:N
     horiHist(i) = sum;
 end
 
+% iterate each row, only add diff greater than threshold to sum
 for i = 1:M
     sum = 0;
     for j = 1:N-1
@@ -46,6 +49,7 @@ for i = 1:M
     vertiHist(i) = sum;
 end
 
+% set horizontal and vertical histogram threshold
 horiHistThre = max(horiHist)*0.25;
 vertiHistThre = max(vertiHist)*0.25;
 
@@ -68,7 +72,7 @@ for i = 1:N
 end
 
 y_diff = horiCoordinate(:, 2) - horiCoordinate(:, 1);
-[M, y_index] = max(y_diff);
+[mx, y_index] = max(y_diff);
 
 flag = false;
 x_startPt = 0; x_endPt = 0;
@@ -86,13 +90,19 @@ for i = 1:M
 end
 
 x_diff = vertiCoordinate(:, 2) - vertiCoordinate(:, 1);
-[M, x_index] = max(x_diff);
+[my, x_index] = max(x_diff);
 
-I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
-    horiCoordinate(y_index, 1):horiCoordinate(y_index, 2));
+% I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
+%      horiCoordinate(y_index, 1):horiCoordinate(y_index, 2));
 
-vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), ...
-    horiCoordinate(y_index, 1):horiCoordinate(y_index, 2)
+I_plate = I_BW(vertiCoordinate(x_index,1):vertiCoordinate(x_index,2), 1:N);
+
+x1 = vertiCoordinate(x_index,1);
+x2 = vertiCoordinate(x_index,2);
+% y1 = horiCoordinate(y_index, 1);
+% y2 = horiCoordinate(y_index, 2);
+y1 = 1;
+y2 = N;
 
 end
 

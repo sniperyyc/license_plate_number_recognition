@@ -58,9 +58,9 @@ for k = 1:numfiles
     %[I_plate, x1, x2, y1, y2] = extract_plate(edgeImages{k});
     % remove shade from the extracted plate
     I_gray = rgb2gray(origImages{k}(x1:x2, y1:y2, :));
-%     I_filtered = remove_shade(origImages{k}(x1:x2, y1:y2, :));
-%     I_extract = I_filtered;
-    I_extract = imcomplement(imbinarize(I_gray));
+    I_filtered = remove_shade(origImages{k}(x1:x2, y1:y2, :));
+    I_extract = I_filtered;
+    %I_extract = imcomplement(imbinarize(I_gray));
     extractImages{k} = I_extract;
     imwrite(I_extract, strcat('dataset_extracted_plate/', origFiles(k).name));
 end

@@ -19,6 +19,7 @@ for i = 1:N-1
     I_BW_vertical_diff(:, i) = I_BW(:, i+1) - I_BW(:, i);
 end
 
+% set horizontal and vertical threshold
 coef = .25;
 horiThre = max(max(I_BW_horizontal_diff))*coef;
 vertiThre = max(max(I_BW_vertical_diff))*coef;
@@ -26,6 +27,7 @@ vertiThre = max(max(I_BW_vertical_diff))*coef;
 horiHist = zeros(N, 1);
 vertiHist = zeros(M, 1);
 
+% iterate each column, only add diff greater than threshold to sum
 for i = 1:N
     sum = 0;
     for j = 1:M-1
@@ -36,6 +38,7 @@ for i = 1:N
     horiHist(i) = sum;
 end
 
+% iterate each row, only add diff greater than threshold to sum
 for i = 1:M
     sum = 0;
     for j = 1:N-1
@@ -46,12 +49,19 @@ for i = 1:M
     vertiHist(i) = sum;
 end
 
+% set horizontal and vertical histogram threshold
 horiHistThre = max(horiHist)*0.25;
 vertiHistThre = max(vertiHist)*0.25;
 
+% store pairs of start point and end point
 horiCoordinate = [];
 vertiCoordinate = [];
 
+% find firstly appered point greater than threshold, mark it as starting
+% point. Keep finding until there is point smaller than threshold, mark it
+% as end point. Iterate until the end of image.
+
+% find horizontal start point and end point
 flag = false;
 y_startPt = 0; y_endPt = 0;
 for i = 1:N
@@ -70,6 +80,7 @@ end
 y_diff = horiCoordinate(:, 2) - horiCoordinate(:, 1);
 [mx, y_index] = max(y_diff);
 
+% find vertical start point and end point
 flag = false;
 x_startPt = 0; x_endPt = 0;
 for i = 1:M
