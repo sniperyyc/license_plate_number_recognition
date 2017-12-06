@@ -1,5 +1,6 @@
 license_plate_number_recognition
 ==============================
+### EECS442 Fall 2017, Final Project
 
 ### Group name: Lamborghini
 
