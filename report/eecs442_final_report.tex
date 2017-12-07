@@ -46,7 +46,7 @@
 \title{EECS 442 Final Project - License Plate Recognition}
 \author{Jiongsheng Cai\\
 			Jingyao Hu\\
-			Yucheng Yin 92951410}
+			Yucheng Yin}
 \begin{document}
 
 \maketitle
@@ -96,7 +96,7 @@ There are a few dataset for license plates online but some of them are significa
 	$$
 	on the original image to calculate the strength at each pixel and after normalization, we convert the gray-scale image to a black-and-white image with edges detected.
 	
-	\item \textbf{Histogram variation}\cite{stackoverflow-extractplate} After the edge detection, we calculate the horizontal and vertical histogram. For the horizontal histogram, it's calculated by traversing each column of the image. It starts traversing with the second pixel form the top of each column and the difference between second and first pixel is calculated. In the meantime, we maintain a sum value for each column. If the difference is greater than a threshold, it is added to the total sum of differences. In the end, we get an array for column wise sum. The vertical histogram is calculated exactly same as horizontal histogram.
+	\item \textbf{Histogram variation} After the edge detection, we calculate the horizontal and vertical histogram. For the horizontal histogram, it's calculated by traversing each column of the image. It starts traversing with the second pixel form the top of each column and the difference between second and first pixel is calculated. In the meantime, we maintain a sum value for each column. If the difference is greater than a threshold, it is added to the total sum of differences. In the end, we get an array for column wise sum. The vertical histogram is calculated exactly same as horizontal histogram.
 	
 	\item \textbf{Image cropping} After we get the two histograms, we start to find the horizontal and vertical location of the license plate. Take horizontal location as an example. We maintain a starting point and an end point while traversing the horizontal histogram array. If certain value is greater than pre-defined threshold, we mark it as starting point and continue until certain value is smaller than threshold, then we mark it as end point. Therefore we will get many pairs of staring and ending points. We choose the pair with largest difference (length). The process for finding vertical location is the same story. 
 	
@@ -153,29 +153,29 @@ As mentioned above, our dataset doesn't come with labels. Due to the large size,
 
 	\begin{figure}[H]
 		\centering
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_0.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_0.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_1.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_1.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_2.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_2.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_3.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_3.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_4.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_4.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_5.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_5.jpg}
 		\end{minipage}
-		\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_6.jpg}
+		\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_6.jpg}
 		\end{minipage}
-			\begin{minipage}{1cm}
-			\includegraphics[width=1cm]{P1010003_7.jpg}
+			\begin{minipage}{0.7cm}
+			\includegraphics[width=0.7cm]{P1010003_7.jpg}
 		\end{minipage}
 		\caption{Cropped characters.}
 	\end{figure}
@@ -210,7 +210,7 @@ In general, our method does a great job in plate extraction and segmentation and
 	\item The relatively poor performance of CNN could attribute to the input images. Since the input images are cropped and segmented by ourselves, it has some differences with the train images EMNIST used by the CNN. For example, 
 	\begin{figure}[H]
 		\begin{center}
-			\includegraphics[scale=0.8]{confuse_digit.jpg}
+			\includegraphics[scale=0.6]{confuse_digit.jpg}
 			\caption{Confusing digit.}
 		\end{center}
 	\end{figure}
@@ -223,19 +223,6 @@ In general, our method does a great job in plate extraction and segmentation and
 	
 	\item Using R-CNN or other CNN models. Currently we only use CNN at the last stage - recognition. If we could use R-CNN to achieve segmentation and recognition at the same time, the results could be improved. Also, with more accurate and dynamic CNN models (parameters), the recognition could be more robust to confusing characters, which will also help improve the accuracy.
 \end{itemize}
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 \end{spacing}
 \bibliography{mytexbib.bib}
