@@ -15,6 +15,12 @@ license_plate_number_recognition
 - Character segmentation by block detection
 - Character recognition by CNN
 
+### Package/Software dependency
+- Matlab
+- Python 3.x
+- Tensorflow
+- Keras
+
 ### Running
 - Run `crop_segment_image.m` to get cropped plate and segmented digits
 - Run `emnist_predict.py` to get predicted results. The result is in test_results.txt. The format is filename, predicted plate.
